@@ -7,11 +7,11 @@ if (isset($_POST['submit'])) {
     $nama_depan = htmlspecialchars($_POST['nama_depan'] ?? '');
     $nama_belakang = htmlspecialchars($_POST['nama_belakang'] ?? '');
     $asal_kota = htmlspecialchars($_POST['asal_kota'] ?? '');
-    $umur = (int)($_POST['umur'] ?? 0); 
+    $umur = (int)($_POST['umur'] ?? 0);
 
-    // IMPLEMENTASI SOAL NO. 5: Validasi Umur Minimal 10
+    // SOAL NO. 5: Validasi Umur Minimal 10
     if ($umur < 10) {
-        $error_message = "Umur yang dimasukkan minimal adalah 10. Saat ini Umur Anda adalah $umur.";
+        $error_message = "Error: Umur yang dimasukkan minimal adalah 10. Saat ini Umur Anda adalah $umur.";
     } else {
         $data_registrasi = [
             "Nama Depan" => $nama_depan,
@@ -21,152 +21,191 @@ if (isset($_POST['submit'])) {
         ];
     }
 } else {
-    $error_message = "Data tidak ditemukan. Silakan isi form registrasi terlebih dahulu.";
+    $error_message = "Peringatan: Data tidak ditemukan. Silakan isi form registrasi terlebih dahulu.";
 }
+
 ?>
 
 <html>
     <head>
         <title>::Data Registrasi::</title>
         <style type="text/css">
+
             body{
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 min-height: 100vh;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                background-color: #f4f7f6;
                 background-size: cover;
                 background-image: url("https://cdn.arstechnica.net/wp-content/uploads/2023/06/bliss-update-1440x960.jpg");
-                font-family: Arial, Helvetica, sans-serif;
+                background-attachment: fixed;
+                background-position: center;
                 margin: 0;
-                padding: 20px;
+                padding: 0;
             }
             .container{
+                margin: 20px auto;
                 background-color: white;
-                border: 3px solid grey;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                max-width: 700px; 
-                width: 100%;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                max-width: 650px;
+                width: 90%;
             }
             h1{
                 text-align: center;
-                color: #333;
-                margin-bottom: 30px;
-                font-size: 28px;
+                color: #007bff; 
+                margin-bottom: 10px;
+                font-size: 32px;
+                font-weight: 700;
+            }
+            h2{
+                 text-align: center;
+                 color: #333;
+                 margin-top: 30px;
+                 margin-bottom: 20px;
+                 font-size: 24px;
             }
             .success-message, .error-message{
-                padding: 15px;
-                margin-bottom: 20px;
-                border-radius: 5px;
+                padding: 18px;
+                margin-bottom: 30px;
+                border-radius: 8px;
                 text-align: center;
-                font-weight: bold;
+                font-weight: 600;
+                font-size: 16px;
             }
             .success-message{
-                 background-color: #d4edda;
-                 color: #155724;
-                 border: 1px solid #c3e6cb;
+                 background-color: #e6f7ff; 
+                 color: #0056b3;
+                 border: 1px solid #b3e0ff;
             }
             .error-message{
-                background-color: #f8d7da;
-                color: #721c24;
-                border: 1px solid #f5c6cb;
+                background-color: #fff0f0;
+                color: #cc0000;
+                border: 1px solid #ffb3b3;
             }
-            table{
+            
+            .data-summary table{
                 width: 100%;
                 border-collapse: collapse;
                 margin-bottom: 20px;
+                border: 1px solid #eee;
+                border-radius: 8px;
+                overflow: hidden;
             }
-            th, td{
-                padding: 12px;
+            .data-summary th, .data-summary td{
+                padding: 15px;
                 text-align: left;
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px solid #f0f0f0;
             }
-            th{
+            .data-summary th{
                 background-color: #f8f9fa;
-                font-weight: bold;
-                color: #333;
-                width: 30%;
+                font-weight: 600;
+                color: #495057;
+                width: 35%;
             }
-            td{
-                color: #666;
+            .data-summary td{
+                background-color: #ffffff;
+                color: #343a40;
             }
-            .data-table th, .data-table td {
-                width: auto;
-                text-align: center;
-            }
-            .back-button{
-                text-align: center;
+            
+            .loop-table {
+                width: 100%;
+                border-collapse: collapse;
                 margin-top: 20px;
             }
-            .back-button a{
+            .loop-table th, .loop-table td {
+                padding: 12px;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+            .loop-table th {
                 background-color: #007bff;
                 color: white;
-                padding: 12px 24px;
+            }
+            .loop-table tr:nth-child(even) {
+                background-color: #f0f8ff;
+            }
+
+            .back-button{
+                text-align: center;
+                margin-top: 30px;
+            }
+            .back-button a{
+                background-color: #6c757d; 
+                color: white;
+                padding: 12px 28px;
                 text-decoration: none;
-                border-radius: 5px;
+                border-radius: 6px;
                 display: inline-block;
+                font-weight: 600;
                 transition: background-color 0.3s;
             }
             .back-button a:hover{
-                background-color: #0056b3;
+                background-color: #5a6268;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>Data Registrasi User</h1>
+            <h1>Data Registrasi</h1>
             
             <?php if (!empty($error_message)): ?>
                 <div class="error-message">
                     <?php echo $error_message; ?>
                 </div>
                 <div class="back-button">
-                    <a href="index.html">Kembali ke Form Registrasi</a>
+                    <a href="index.html">Kembali ke Form</a>
                 </div>
             <?php elseif ($data_registrasi): ?>
                 <div class="success-message">
-                    Registrasi Berhasil! Data yang Anda masukkan:
+                    Registrasi Berhasil! Data pengguna dan hasil perulangan umur ditampilkan di bawah.
                 </div>
                 
-                <table>
-                    <?php foreach ($data_registrasi as $label => $value): ?>
-                    <tr>
-                        <th><?php echo $label; ?></th>
-                        <td><?php echo $value; ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </table>
+                <div class="data-summary">
+                    <table>
+                        <?php foreach ($data_registrasi as $label => $value): ?>
+                        <tr>
+                            <th><?php echo $label; ?></th>
+                            <td><?php echo $value; ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
 
-                <h2 style="text-align: center; margin-top: 30px; color: #333;">Tabel Perulangan Umur (<?php echo $umur; ?> Baris)</h2>
-                <table class="data-table">
+                <h2>Hasil Perulangan (Umur = <?php echo $umur; ?>)</h2>
+                <p style="text-align: center; color: #666; font-style: italic;">
+                    Hanya menampilkan baris Genap dan melewati baris 4 & 8.
+                </p>
+                <table class="loop-table">
                     <tr>
-                        <th style="width: 20%;">Nomor Baris</th>
+                        <th style="width: 20%;">Nomor Iterasi</th>
                         <th>Keterangan</th>
                     </tr>
                     <?php 
-                    // Perulangan sebanyak nilai $umur (Soal No. 2)
                     for ($i = 1; $i <= $umur; $i++): 
                         
-                        // IMPLEMENTASI SOAL NO. 4: Skip Baris 4 dan 8
+                        // SOAL NO. 4: Skip Baris 4 dan 8
                         if ($i == 4 || $i == 8) {
-                            continue; 
+                            continue;
                         }
                         
-                        // IMPLEMENTASI SOAL NO. 3: Hanya tampilkan baris genap
+                        // SOAL NO. 3: Hanya tampilkan baris genap
                         if ($i % 2 == 0): 
                     ?>
                         <tr>
                             <td><?php echo $i; ?></td>
-                            <td>Ini adalah baris ke-<?php echo $i; ?> (Nomor Genap)</td>
+                            <td>Baris Genap ke-<?php echo $i/2; ?></td>
                         </tr>
                     <?php 
-                        endif; 
-                    endfor; 
+                        endif;
+                    endfor;
                     ?>
                 </table>
+                
                 <div class="back-button">
-                    <a href="index.html">Kembali ke Form Registrasi</a>
+                    <a href="index.html">Kembali ke Form</a>
                 </div>
             <?php endif; ?>
         </div>
